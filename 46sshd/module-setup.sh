@@ -5,7 +5,7 @@
 
 # called by dracut
 check() {
-    require_binaries sshd || return 1
+    require_binaries sshd /usr/lib/ssh/sshd-session || return 1
     # 0 enables by default, 255 only on request
     return 0
 }
@@ -57,6 +57,9 @@ install() {
     inst_binary /usr/sbin/sshd
     inst_multiple -o /etc/sysconfig/sshd /etc/sysconfig/ssh \
             /etc/sysconfig/dracut-sshd
+
+    # Support OpenSSH 9.8+
+    inst_binary /usr/lib/ssh/sshd-session
 
     # First entry for Fedora 28, second for Fedora 27
     inst_multiple -o /etc/crypto-policies/back-ends/opensshserver.config \
